@@ -14,10 +14,8 @@ class App extends React.Component {
         titulo: "",
         descripcion: "",
       },
-      tareas:[
-                
-            ]
-        }
+      tareas:[]
+      }
 
     this.handleChangeForm = this.handleChangeForm.bind(this);
     }
@@ -46,8 +44,14 @@ class App extends React.Component {
         this.setState({ tareas: nuevaListaTareas});
   }
 
-  handleFinishTask = (e) => {
-  
+  handleFinishTask = id => {
+    const nuevasTareas = this.state.tareas.map( tarea => {
+      if (tarea.id === id ) {
+        tarea.terminada = !tarea.terminada
+      }
+      return tarea
+    })
+    this.setState({tareas: nuevasTareas})
   }
 
   render(){
