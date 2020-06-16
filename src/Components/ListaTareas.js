@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
 
 class ListaTareas extends Component {
-    constructor( props ) {
-        super( props );
-        
-    }
+
 
     render() {
         const { tareas } = this.props
 
         return (
             <div>
-                <h1 className="text-center">Tareas NO Terminadas</h1>
+                <h1 className="text-center">Tareas {this.props.tituloForm}</h1>
                 <div className="row">
                     {
                         tareas.map(tarea => (
@@ -24,8 +21,11 @@ class ListaTareas extends Component {
                                         <p>{tarea.descripcion}</p>
                                     </div>
                                 
-                                    <div className="card-footer">
-                                        <button  className="btn btn-primary" >
+                                    <div className="card-footer" hidden={this.props.hide}>
+                                        <button 
+                                            className="btn btn-primary"
+                                            onClick={this.props.onEditTask.bind(this, tarea.id, tarea.titulo, tarea.descripcion)}
+                                            >
                                             Editar
                                         </button>
                                         <button

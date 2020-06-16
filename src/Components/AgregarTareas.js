@@ -9,9 +9,9 @@ class AgregarTareas extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-        this.props.onAddTask();
-
+        e.target.titulo.value = ""
+        e.target.descripcion.value = ""
+        this.props.onAddTask()
     }
 
     render() {
@@ -22,7 +22,7 @@ class AgregarTareas extends Component {
             <div className="col-md-3 p-2">
                 <div className="card card-body">
                     <form onSubmit={this.handleSubmit}>
-                        <h4>Crear Tarea</h4>
+                        <h4>Agregar Tarea</h4>
 
                         <div className="form-group">
                             <input
