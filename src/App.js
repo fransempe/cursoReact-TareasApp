@@ -20,6 +20,16 @@ class App extends React.Component {
     this.handleChangeForm = this.handleChangeForm.bind(this);
   }
 
+  componentDidMount() {
+
+    if (localStorage.getItem("tareas") === null) {
+      this.getTasks() 
+    } else {
+      let tareas = localStorage.getItem('tareas')
+      this.setState({ tareas: JSON.parse(tareas) })
+    }
+  }
+
   handleChangeForm(e) {
     const { name, value } = e.target;
 
@@ -43,7 +53,7 @@ class App extends React.Component {
         }
         return tarea
       })
-      this.setState({ tareas: nuevasTareas })
+      this.setState({ tareas: this.setLocalStorage(nuevasTareas) })
       this.limpioState()    
     } else {
         nuevaListaTareas.push({
@@ -53,7 +63,7 @@ class App extends React.Component {
           terminada: false
         })
         //Agrego la nueva lista de tareas al estado tareas.
-        this.setState({ tareas: nuevaListaTareas });
+        this.setState({ tareas: this.setLocalStorage(nuevaListaTareas) });
         // Reseteo el estado de formValues para que se vacíen las cajas de texto.
         this.limpioState()
     }
@@ -67,7 +77,7 @@ class App extends React.Component {
       }
       return tarea
     })
-    this.setState({ tareas: nuevasTareas })
+    this.setState({ tareas: this.setLocalStorage(nuevasTareas) })
   }
 
   handleEditTask = (id, titulo, descripcion) => {
@@ -83,11 +93,27 @@ class App extends React.Component {
 
   }
 
+  async getTasks(){
+    const res = await fetch("http://localhost:3000/tareas.json")
+    const datos = await res.json()
+        
+    this.setState({ tareas: this.setLocalStorage(datos)})
+  }
+
   limpioState() {
     this.setState({
       formValues: { id: null, titulo: '', descripcion: '' }
     })
   }
+
+  setLocalStorage = (datos) => {
+    //Guardo en localStorage
+    localStorage.setItem('tareas', JSON.stringify(datos))
+    let tareas = localStorage.getItem('tareas')
+    // Se parsea para poder ser usado en js con JSON.parse
+    tareas = JSON.parse(tareas)
+    return tareas
+  } 
 
   render() {
     const { tareas } = this.state
