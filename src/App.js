@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Nav from './Components/Nav'
-import ListaTareas from './Components/ListaTareas'
+import { ListaTareas } from './Components/ListaTareas'
 import AgregarTareas from './Components/AgregarTareas';
+import CustomModal from './Components/CustomModal';
 
-
-class App extends React.Component {
+class App extends Component {
 
   constructor() {
     super();
@@ -15,7 +15,9 @@ class App extends React.Component {
         titulo: "",
         descripcion: ""
       },
-      tareas: []
+      tareas: [],
+      showModal: false,
+      titleModal: "",
     }
     this.handleChangeForm = this.handleChangeForm.bind(this);
   }
@@ -41,7 +43,7 @@ class App extends React.Component {
     })
   }
 
-  handleAddTask = () => {
+  handleSaveTask = () => {
     const { id, titulo, descripcion } = this.state.formValues
     const nuevaListaTareas = this.state.tareas
     //Si no es null el ID es porque es para editar la tarea, sino, se da de alta.
@@ -53,7 +55,8 @@ class App extends React.Component {
         }
         return tarea
       })
-      this.setState({ tareas: this.setLocalStorage(nuevasTareas) })
+      this.setLocalStorage(nuevasTareas)
+      this.setState({ tareas: nuevasTareas, showModal: false })
       this.limpioState()    
     } else {
         nuevaListaTareas.push({
@@ -63,7 +66,8 @@ class App extends React.Component {
           terminada: false
         })
         //Agrego la nueva lista de tareas al estado tareas.
-        this.setState({ tareas: this.setLocalStorage(nuevaListaTareas) });
+        this.setLocalStorage(nuevaListaTareas)
+        this.setState({ tareas: nuevaListaTareas, showModal:false });
         // Reseteo el estado de formValues para que se vacíen las cajas de texto.
         this.limpioState()
     }
@@ -77,7 +81,8 @@ class App extends React.Component {
       }
       return tarea
     })
-    this.setState({ tareas: this.setLocalStorage(nuevasTareas) })
+    this.setLocalStorage(nuevasTareas)
+    this.setState({ tareas: nuevasTareas })
   }
 
   handleEditTask = (id, titulo, descripcion) => {
@@ -88,7 +93,9 @@ class App extends React.Component {
         id: id,
         titulo: titulo,
         descripcion: descripcion
-      }
+      },
+      showModal: true,
+      titleModal: "Editar Tarea",
     })
 
   }
@@ -96,8 +103,9 @@ class App extends React.Component {
   async getTasks(){
     const res = await fetch("http://localhost:3000/tareas.json")
     const datos = await res.json()
-        
-    this.setState({ tareas: this.setLocalStorage(datos)})
+    console.log("datos", datos)
+    this.setLocalStorage(datos)
+    this.setState({ tareas: datos})
   }
 
   limpioState() {
@@ -109,22 +117,37 @@ class App extends React.Component {
   setLocalStorage = (datos) => {
     //Guardo en localStorage
     localStorage.setItem('tareas', JSON.stringify(datos))
-    let tareas = localStorage.getItem('tareas')
-    // Se parsea para poder ser usado en js con JSON.parse
-    tareas = JSON.parse(tareas)
-    return tareas
   } 
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false })
+  }
+
+  handleShowModal = (event ) => {
+    event.preventDefault();
+    this.setState({ showModal: true, titleModal: "Agregar Tarea" })
+  }
 
   render() {
     const { tareas } = this.state
     return (
       <div>
-        <Nav />
-        <AgregarTareas
-          handleChange={this.handleChangeForm}
-          formValues={this.state.formValues}
-          onAddTask={this.handleAddTask}
+        <Nav
+          handleAddTask={ this.handleShowModal }
         />
+
+        <CustomModal
+          show={ this.state.showModal }
+          handleClose={ this.handleCloseModal }
+          title={ this.state.titleModal }
+        >
+          <AgregarTareas
+            handleChange={this.handleChangeForm}
+            formValues={this.state.formValues}
+            onAddTask={this.handleSaveTask}
+          />
+        </CustomModal>
+
         <div className="container p-4">
           <ListaTareas
             tituloForm = {"No Terminadas"}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class ListaTareas extends Component {
+export class ListaTareas extends Component {
 
 
     render() {
@@ -43,4 +43,3 @@ class ListaTareas extends Component {
         )
     }
 }
-export default ListaTareas;
