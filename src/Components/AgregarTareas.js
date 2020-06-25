@@ -19,7 +19,7 @@ class AgregarTareas extends Component {
         const { titulo, descripcion } = formValues;
 
         return (
-            <div className="col-md-3 p-2">
+            <div className="p-2">
                 <div className="card card-body">
                     <form onSubmit={this.handleSubmit}>
                         <h4>Agregar / Editar Tarea</h4>
