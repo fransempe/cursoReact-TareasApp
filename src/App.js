@@ -123,17 +123,22 @@ class App extends Component {
     this.setState({ showModal: false })
   }
 
-  handleShowModal = (event ) => {
+  handleShowModal = (event) => {
     event.preventDefault();
     this.setState({ showModal: true, titleModal: "Agregar Tarea" })
   }
 
+  handlelogOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('tareas')
+  }
   render() {
     const { tareas } = this.state
     return (
       <div>
         <Nav
           handleAddTask={ this.handleShowModal }
+          handleLogOut={ this.handlelogOut }
         />
 
         <CustomModal
@@ -162,7 +167,7 @@ class App extends Component {
             onFinishTask={this.handleFinishTask}
             onEditTask={this.handleEditTask}
             hide={true} 
-          />
+          /> 
         </div>
       </div>
     );

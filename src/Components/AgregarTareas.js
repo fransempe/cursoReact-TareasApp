@@ -22,8 +22,6 @@ class AgregarTareas extends Component {
             <div className="p-2">
                 <div className="card card-body">
                     <form onSubmit={this.handleSubmit}>
-                        <h4>Agregar / Editar Tarea</h4>
-
                         <div className="form-group">
                             <input
                                 type="text"

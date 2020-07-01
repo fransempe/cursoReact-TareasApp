@@ -1,5 +1,5 @@
 [
-    { "id": 0, "titulo":"Tarea 1", "descripcion":"Esta es la descripción de la tarea 1", "terminada": false},
+    { "id": 0, "titulo":"Tarea 1", "descripcion":"Esta es la descripción de la tarea 1", "terminada": true},
     { "id": 1, "titulo":"Tarea 2", "descripcion":"Esta es la descripción de la tarea 2", "terminada": true},
     { "id": 2, "titulo":"Tarea 3", "descripcion":"Esta es la descripción de la tarea 3", "terminada": false},
     { "id": 3, "titulo":"Tarea 4", "descripcion":"Esta es la descripción de la tarea 4", "terminada": true},
